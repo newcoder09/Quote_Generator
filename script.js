@@ -1,17 +1,32 @@
-
+// returns the specified string represented by HTML when pressed
 const quoteContainer = document.getElementById('quote-container');
 const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
 
 
 // create global variable so available in more than one function
 let apiQuotes = [];
 
+// function to show it is loading
+function loading(){
+  loader.hidden = false;
+  quoteContainer.hidden = true;
+}
+
+// hiding load
+function complete(){
+ quoteContainer.hidden = false;
+ loader.hidden = true;
+}
+
+
 // newQuote function 
     
-function newQuote () {
+function newQuote() {
+ 
 // this is to pick the random quote using the math.floor which rounds down
 const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
 // replace null author with unknown
@@ -22,18 +37,19 @@ if (!quote.author){
 }
 // see if quote length to choose style
 if (quote.text.length > 120){
-  quoteText.classList.add('long-quote')
+  quoteText.classList.add('long-quote');
 }else{
-    quoteText.classList.remove('long-quote') 
+    quoteText.classList.remove('long-quote'); 
 }
-
 
 
 
 // set the value of the text content, we can pass a string which is shown in the element. we only want the auther 
 
 quoteText.textContent = quote.text;
+complete()
 }
+
 
 // API Quotes from API
 async function getQuotes() {
@@ -45,7 +61,7 @@ const response = await fetch(apiUrl);
 apiQuotes = await response.json();
 
 // this is what the new function above is called.
-newQuote()
+
 
  } catch(error){
 
@@ -64,5 +80,7 @@ function tweetQuote(){
 newQuoteBtn.addEventListener('click', newQuote);
 twitterBtn.addEventListener('click', tweetQuote);
 
-// on load
+
 getQuotes();
+
+

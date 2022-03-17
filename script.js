@@ -24,8 +24,10 @@ function complete(){
 
 
 // newQuote function 
+// show container 
     
 function newQuote() {
+  loading(); 
  
 // this is to pick the random quote using the math.floor which rounds down
 const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
@@ -40,6 +42,7 @@ if (quote.text.length > 120){
   quoteText.classList.add('long-quote');
 }else{
     quoteText.classList.remove('long-quote'); 
+    
 }
 
 
@@ -47,18 +50,20 @@ if (quote.text.length > 120){
 // set the value of the text content, we can pass a string which is shown in the element. we only want the auther 
 
 quoteText.textContent = quote.text;
-complete()
+complete();
 }
-
+// show container
 
 // API Quotes from API
 async function getQuotes() {
+  loading();
  const apiUrl = 'https://type.fit/api/quotes';
  try {
     //  the const will populate when it has some fetch data not before
 const response = await fetch(apiUrl);
 // getting json as a reponse as a json string and passing as a variable quote
 apiQuotes = await response.json();
+newQuote();
 
 // this is what the new function above is called.
 
